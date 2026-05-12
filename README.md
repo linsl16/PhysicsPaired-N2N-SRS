@@ -1,10 +1,8 @@
-# PhysicsPaired-N2N-SRS
-Self-supervised 3D Noise2Noise denoising for physics-paired volumetric SRS microscopy using paired I/Q acquisitions.
+# Physics-Paired N2N-SRS
 
-This repository provides a MATLAB implementation of physics-paired Noise2Noise (N2N) denoising for volumetric stimulated Raman scattering (SRS) microscopy.
+This repository provides a MATLAB implementation of a physics-paired Noise2Noise denoising workflow for volumetric stimulated Raman scattering (SRS) microscopy.
 
-The code was developed for paired SRS image volumes acquired by the PHYSIQ framework, in which two matched noisy observations of the same underlying Raman signal are obtained through orthogonal I/Q acquisition channels. These paired noisy volumes enable fully self-supervised Noise2Noise training without requiring a clean ground-truth image.
-
+The denoising code is based on the original Noise2Noise principle and has been adapted for PHYSIQ-SRS data, where two matched noisy observations of the same Raman signal are acquired through paired I/Q channels. These physics-paired measurements serve as input-target pairs for self-supervised 3D denoising without requiring clean ground-truth images.
 ## Core functionality
 
 The main script performs the following steps:
