@@ -21,5 +21,16 @@ The main script performs the following steps:
 The implementation is designed for volumetric SRS datasets with a relatively small number of axial slices, for example 3D volumes with 8 z-planes. The network therefore uses anisotropic pooling, where downsampling is applied in the lateral dimensions while preserving the axial dimension.
 
 ## Repository contents
+Requirements
 
+This code was tested in MATLAB with the Deep Learning Toolbox and Image Processing Toolbox.
+
+Recommended hardware:
+
+NVIDIA GPU with sufficient memory
+24 GB GPU memory was used for the default configuration
+Smaller GPUs may require reducing patchSize or miniBatchSize
+## License
+
+This repository is released for academic and research use. Please see the LICENSE file for details.
 main_Crossvalidation_N2N.m
