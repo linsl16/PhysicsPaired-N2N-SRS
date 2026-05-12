@@ -22,4 +22,4 @@ The implementation is designed for volumetric SRS datasets with a relatively sma
 
 ## Repository contents
 
-main_Cross_N2N_24GB_clean_english.m
+main_Crossvalidation_N2N.m
