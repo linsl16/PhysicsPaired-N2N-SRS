@@ -1,0 +1,7 @@
+TrackMate parameter settings
+
+LD trajectories were generated in Fiji using the TrackMate plugin. PHYSIQ-denoised 3D time-lapse SRS volumes were imported into Fiji and analyzed as volumetric image sequences. LD spots were detected using the LoG detector. The spot diameter was chosen according to the apparent LD size in the denoised images. The detection threshold was empirically adjusted for each dataset to minimize false detections from background fluctuations while retaining LD-like puncta.
+
+Trajectory linking was performed using the TrackMate LAP tracker. The maximum linking distance was determined from the maximum expected LD velocity and the time interval between consecutive 3D volumes. This criterion ensured that the allowed frame-to-frame linking distance was physically consistent with the fastest LD movements observed in the dataset, while reducing incorrect links between neighboring droplets. Short trajectories and trajectories with unrealistically large frame-to-frame jumps were excluded from downstream analysis.
+
+After TrackMate export, all trajectory-level analyses were performed in MATLAB. The released analysis code calculates trajectory duration, total length, average speed, maximum displacement, directionality, MSD curves and the short-lag anomalous exponent α. For MSD-based motion-state classification, trajectories with α below the confined-motion threshold were assigned as confined, trajectories with α near unity were assigned as Brownian-like, and trajectories with α above the directed-motion threshold were assigned as directed.
