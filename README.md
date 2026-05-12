@@ -24,8 +24,30 @@ The implementation is designed for volumetric SRS datasets with a relatively sma
 Requirements
 
 This code was tested in MATLAB with the Deep Learning Toolbox and Image Processing Toolbox.
+## Scope of the released code
 
-Recommended hardware:
+This repository contains two main components:
+
+1. **PHYSIQ-N2N denoising**
+   - paired 4D TIFF loading
+   - robust intensity normalization
+   - paired 3D patch extraction
+   - anisotropic 3D U-Net construction
+   - bidirectional Noise2Noise training
+   - sliding-window volumetric inference
+   - ensemble denoised-output generation
+
+2. **MSD-based trajectory analysis**
+   - TrackMate XML import
+   - trajectory filtering
+   - displacement and velocity calculation
+   - MSD calculation
+   - short-lag α fitting
+   - motion-state classification
+   - publication-style plotting
+
+LD localization and initial trajectory linking were performed in Fiji using the TrackMate plugin. TrackMate settings are documented below and in the Methods of the manuscript.
+## Recommended hardware:
 
 NVIDIA GPU with sufficient memory
 24 GB GPU memory was used for the default configuration
