@@ -45,8 +45,7 @@ inputDirs = {
     % N2NA_aligned.tif and N2NB_aligned.tif.
     % Example:
     % 'D:\your_dataset_folder\cell_001'
-    % fullfile(pwd, 'example_dataset')
-    'E:\onedrive\OneDrive - National University of Singapore\data\Data PHYSIQ\营养\OA\905\AlignStack_GlobalShift2'
+      'example_dataset'
 };
 
 numZ = 8; % Number of Z-slices per 3D volume.
