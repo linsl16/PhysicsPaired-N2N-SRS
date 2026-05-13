@@ -45,7 +45,8 @@ inputDirs = {
     % N2NA_aligned.tif and N2NB_aligned.tif.
     % Example:
     % 'D:\your_dataset_folder\cell_001'
-      'example_dataset'
+    % fullfile(pwd, 'example_dataset')
+    'E:\onedrive\OneDrive - National University of Singapore\data\Data PHYSIQ\OA\905\AlignStack_GlobalShift2'
 };
 
 numZ = 8; % Number of Z-slices per 3D volume.
@@ -450,13 +451,20 @@ function denoised_vol = sliding_window_predict(vol_noisy, net, predPatchSize, st
     denoised_padded_vol = zeros(size(padded_vol), 'single');
     weight_map = zeros(size(padded_vol), 'single');
 
-    if gpuDeviceCount > 0
+    useGPU = gpuDeviceCount > 0;
+    if useGPU
         denoised_padded_vol = gpuArray(denoised_padded_vol);
         weight_map = gpuArray(weight_map);
         padded_vol = gpuArray(padded_vol);
     end
 
-    win = hanning(pH) * hanning(pW)' .* reshape(hanning(pZ), 1, 1, pZ);
+    % Create a 3D Hann-like blending window without requiring the
+    % Signal Processing Toolbox. A small nonzero floor avoids losing
+    % boundary slices when the stride equals the patch size in Z.
+    win = create_hann3d_window(pH, pW, pZ, 'single');
+    if useGPU
+        win = gpuArray(win);
+    end
 
     for z_start = 1:sZ:(paddedZ - pZ + 1)
         for w_start = 1:sW:(paddedW - pW + 1)
@@ -481,3 +489,41 @@ function denoised_vol = sliding_window_predict(vol_noisy, net, predPatchSize, st
     denoised_padded_vol = denoised_padded_vol ./ weight_map;
     denoised_vol = gather(denoised_padded_vol(1:H_orig, 1:W_orig, 1:Z_orig));
 end
+
+function win3d = create_hann3d_window(pH, pW, pZ, outputClass)
+    %CREATE_HANN3D_WINDOW Create a 3D Hann-like blending window.
+    %
+    % This function avoids the toolbox-dependent hanning/hann functions.
+    % The small weight floor prevents zero-weight boundary voxels, which is
+    % important when the prediction stride equals the patch size along Z.
+
+    if nargin < 4
+        outputClass = 'single';
+    end
+
+    minWeight = 1e-3;
+
+    wy = local_hann_vector(pH);
+    wx = local_hann_vector(pW);
+    wz = local_hann_vector(pZ);
+
+    wy = max(wy, minWeight);
+    wx = max(wx, minWeight);
+    wz = max(wz, minWeight);
+
+    win3d = (wy * wx') .* reshape(wz, 1, 1, pZ);
+    win3d = cast(win3d, outputClass);
+end
+
+function w = local_hann_vector(n)
+    %LOCAL_HANN_VECTOR Toolbox-free symmetric Hann window.
+    if n <= 0
+        error('Window length must be positive.');
+    elseif n == 1
+        w = 1;
+    else
+        idx = (0:n-1)';
+        w = 0.5 - 0.5 * cos(2 * pi * idx / (n - 1));
+    end
+end
+
